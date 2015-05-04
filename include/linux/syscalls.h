@@ -543,6 +543,10 @@ asmlinkage long sys_llseek(unsigned int fd, unsigned long offset_high,
 			unsigned long offset_low, loff_t __user *result,
 			unsigned int whence);
 asmlinkage long sys_read(unsigned int fd, char __user *buf, size_t count);
+
+//jie added here
+asmlinkage long sys_asyncos_sys1(unsigned int fd, char __user *buf, size_t count);
+
 asmlinkage long sys_readahead(int fd, loff_t offset, size_t count);
 asmlinkage long sys_readv(unsigned long fd,
 			  const struct iovec __user *vec,
