@@ -542,10 +542,12 @@ asmlinkage long sys_lseek(unsigned int fd, off_t offset,
 asmlinkage long sys_llseek(unsigned int fd, unsigned long offset_high,
 			unsigned long offset_low, loff_t __user *result,
 			unsigned int whence);
+/*jie even since the read syscall has been replaced, this definition is needed here for sure*/
 asmlinkage long sys_read(unsigned int fd, char __user *buf, size_t count);
 
 //jie added here
 asmlinkage long sys_asyncos_sys1(unsigned int fd, char __user *buf, size_t count);
+asmlinkage long sys_asyncos_sys2(unsigned int fd, char __user *buf, size_t count);
 
 asmlinkage long sys_readahead(int fd, loff_t offset, size_t count);
 asmlinkage long sys_readv(unsigned long fd,
