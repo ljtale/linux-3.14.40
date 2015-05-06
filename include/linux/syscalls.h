@@ -546,8 +546,9 @@ asmlinkage long sys_llseek(unsigned int fd, unsigned long offset_high,
 asmlinkage long sys_read(unsigned int fd, char __user *buf, size_t count);
 
 //jie added here
-asmlinkage long sys_asyncos_sys1(unsigned int fd, char __user *buf, size_t count);
-asmlinkage long sys_asyncos_sys2(unsigned int fd, char __user *buf, size_t count);
+asmlinkage long sys_asyncos_init(void);
+asmlinkage long sys_asyncos_issue_read(unsigned int fd, char __user *buf, size_t count);
+asmlinkage long sys_asyncos_complete(int worker, int pos);
 
 asmlinkage long sys_readahead(int fd, loff_t offset, size_t count);
 asmlinkage long sys_readv(unsigned long fd,
