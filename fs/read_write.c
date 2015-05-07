@@ -21,6 +21,7 @@
 
 #include <asm/uaccess.h>
 #include <asm/unistd.h>
+#include <linux/kernel.h>
 
 typedef ssize_t (*io_fn_t)(struct file *, char __user *, size_t, loff_t *);
 typedef ssize_t (*iov_fn_t)(struct kiocb *, const struct iovec *,
@@ -389,19 +390,28 @@ ssize_t do_sync_read(struct file *filp, char __user *buf, size_t len, loff_t *pp
 }
 
 EXPORT_SYMBOL(do_sync_read);
-
+/* jie: loff_t is of type int, size_t is off type unsigned int*/
 ssize_t vfs_read(struct file *file, char __user *buf, size_t count, loff_t *pos)
 {
 	ssize_t ret;
-
-	if (!(file->f_mode & FMODE_READ))
+	if (!(file->f_mode & FMODE_READ)){
+//		trace_printk(KERN_INFO "jie: vfs_read-> the file mode is not good\n");
 		return -EBADF;
-	if (!file->f_op->read && !file->f_op->aio_read)
+	}
+	if (!file->f_op->read && !file->f_op->aio_read){
+//		trace_printk(KERN_INFO "jie: vfs_read-> the file operations is not good\n");
 		return -EINVAL;
+	}
 	if (unlikely(!access_ok(VERIFY_WRITE, buf, count)))
+	{
+		/* the check is all left to MMU*/
+//		trace_printk(KERN_INFO "jie: vfs_read-> the address check is not good\n");
 		return -EFAULT;
-
+	}
 	ret = rw_verify_area(READ, file, pos, count);
+//	if(ret < 0){
+//		trace_printk(KERN_INFO "jie: vfs_read-> the read permission %ld\n", ret);
+//	}
 	if (ret >= 0) {
 		count = ret;
 		if (file->f_op->read)
